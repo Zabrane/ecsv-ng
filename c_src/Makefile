@@ -32,7 +32,7 @@ endif
 CFLAGS += -g -fvisibility=hidden -fPIC -I $(ERTS_INCLUDE_DIR)
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR)
 
-LDLIBS += -lei -lcsv
+LDLIBS += -lcsv
 LDFLAGS += -g -shared
 
 # Verbosity.
