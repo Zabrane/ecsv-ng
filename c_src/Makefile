@@ -9,7 +9,7 @@ PROJECT := $(strip $(PROJECT))
 ERTS_INCLUDE_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s/erts-~s/include/\", [code:root_dir(), erlang:system_info(version)]).")
 
 C_SRC_DIR = $(CURDIR)
-C_SRC_OUTPUT ?= priv/ecsv.so
+C_SRC_OUTPUT ?= $(CURDIR)/priv/ecsv.so
 
 # System type and C compiler/flags.
 
