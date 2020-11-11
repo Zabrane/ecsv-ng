@@ -1,5 +1,5 @@
 -module(ecsv_nif).
--export([parser_init/1, parse/3, write/1, write_lines/1]).
+-export([parser_init/1, parse/3, write/1, write_lines/1, test/0]).
 
 -on_load(load_nifs/0).
 
@@ -28,6 +28,8 @@ write_lines(L) ->
 -spec write(ecsv:line()) -> iolist().
 write(L) ->
     erlang:nif_error(not_loaded, [L]).
+
+test() -> ok.
 
 load_nifs() ->
     SoName = case code:priv_dir(?APPNAME) of

@@ -4,6 +4,10 @@ defmodule ECSV.Mixfile do
   def project() do
     [
       app: :ecsv,
+      elixirc_options: [warnings_as_errors: true],
+      compilers: [:elixir_make | Mix.compilers()],
+      make_makefile: "c_src/Makefile",
+      package: package(),
       version: "0.2.0",
       elixir: "~> 1.9",
       description: "CSV Stream Parser",
@@ -14,7 +18,7 @@ defmodule ECSV.Mixfile do
 
   def package do
     [
-      files: ~w(doc src mix.exs LICENSE),
+      files: ~w(doc src c_src priv rebar.config mix.exs LICENSE),
       licenses: ["ISC"],
       maintainers: ["Namdak Tonpa"],
       name: :ecsv,
@@ -28,6 +32,7 @@ defmodule ECSV.Mixfile do
 
   def deps() do
     [
+      {:elixir_make, "~> 0.6.0", runtime: false},
       {:ex_doc, "~> 0.11", only: :dev}
     ]
   end
