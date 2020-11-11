@@ -1,7 +1,8 @@
-%% @doc Erlang NIF CSV parser and writer
-%%
-%% @end.
 -module(ecsv).
+-compile(export_all).
+-behaviour(application).
+-behaviour(supervisor).
+-export([start/2, stop/1, init/1]).
 
 %% API exports
 -export([
@@ -81,6 +82,10 @@
 %%====================================================================
 %% API functions
 %%====================================================================
+
+start(_StartType, _StartArgs) -> supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+stop(_State) -> ok.
+init([]) -> {ok, { {one_for_one, 5, 10}, []} }.
 
 -spec default_block_size() -> ?BLOCK_SIZE.
 %% @doc Default block size used by parser API functions

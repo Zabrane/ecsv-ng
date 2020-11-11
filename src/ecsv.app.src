@@ -1,14 +1,10 @@
 {application, ecsv,
- [{description, "Erlang CSV parser"},
+ [{description, "CSV Stream Parser"},
   {vsn, "0.2.0"},
   {registered, []},
-  {applications,
-   [kernel,
-    stdlib
-   ]},
+  {applications, [kernel, stdlib]},
   {env,[]},
   {modules, []},
-
   {maintainers, []},
   {licenses, []},
   {links, []}

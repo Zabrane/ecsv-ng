@@ -1,28 +1,10 @@
-%% @private
-%% @doc NIF API module
-%%
-%% Do not use this module directly.
-%%
-%% @end.
 -module(ecsv_nif).
+-export([parser_init/1, parse/3, write/1, write_lines/1]).
 
-%% API exports
-
--export([
-         parser_init/1
-         , parse/3
-         , write/1
-         , write_lines/1
-        ]).
-
--on_load(init/0).
+-on_load(load_nifs/0).
 
 -define(APPNAME, ecsv).
 -define(LIBNAME, ecsv).
-
-%%====================================================================
-%% API functions
-%%====================================================================
 
 -spec parser_init(Opts :: ecsv:options()) -> ecsv:state().
 parser_init(Opts) ->
@@ -47,7 +29,7 @@ write_lines(L) ->
 write(L) ->
     erlang:nif_error(not_loaded, [L]).
 
-init() ->
+load_nifs() ->
     SoName = case code:priv_dir(?APPNAME) of
         {error, bad_name} ->
             case filelib:is_dir(filename:join(["..", priv])) of
@@ -59,4 +41,5 @@ init() ->
         Dir ->
             filename:join(Dir, ?LIBNAME)
     end,
-    erlang:load_nif(SoName, 0).
+    erlang:load_nif(SoName, 0),
+    ok.
