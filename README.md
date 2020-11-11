@@ -2,6 +2,8 @@
 
 # Erlang NIF CSV parser and writer #
 
+[![Hex pm](http://img.shields.io/hexpm/v/abac.svg?style=flat&x=1)](https://hex.pm/packages/abac)
+
 Copyright (c) 2016 Altworx
 
 __Version:__ 0.2.0
