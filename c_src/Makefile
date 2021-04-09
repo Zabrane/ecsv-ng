@@ -26,14 +26,15 @@ else ifeq ($(UNAME_SYS), FreeBSD)
 else ifeq ($(UNAME_SYS), Linux)
 	CC ?= gcc
 	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wextra
-	CXXFLAGS ?= -O3 -finline-functions -Wall
+	CXXFLAGS ?= -O3 -finline-functions -Wall -shared
+	LDFLAGS ?= -shared
 endif
 
 CFLAGS += -g -fvisibility=hidden -fPIC -I $(ERTS_INCLUDE_DIR)
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR)
 
 LDLIBS += -lcsv
-LDFLAGS += -g -shared
+LDFLAGS += -fPIC
 
 # Verbosity.
 
