@@ -8,7 +8,7 @@ defmodule ECSV.Mixfile do
       compilers: [:elixir_make | Mix.compilers()],
       make_makefile: "c_src/Makefile",
       package: package(),
-      version: "0.2.0",
+      version: "1.4.0",
       elixir: "~> 1.9",
       description: "CSV Stream Parser",
       package: package(),
