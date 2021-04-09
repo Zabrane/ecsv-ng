@@ -1,6 +1,6 @@
 {application, ecsv,
  [{description, "CSV Stream Parser"},
-  {vsn, "1.4.0"},
+  {vsn, "1.4.1"},
   {registered, []},
   {applications, [kernel, stdlib]},
   {env,[]},
