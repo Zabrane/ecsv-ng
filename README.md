@@ -27,6 +27,11 @@ Application requires development files for [`libcsv`](https://sourceforge.net/pr
 apt-get install libcsv3 libcsv-dev
 ```
 
+On macOS:
+```
+brew install libcsv
+```
+
 For building you need installed [`rebar3`](https://www.rebar3.org/).
 
 ```
