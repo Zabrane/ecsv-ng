@@ -1,24 +1,26 @@
 # Based on c_src.mk from erlang.mk by Loic Hoguin <essen@ninenines.eu>
 
 CURDIR := $(shell pwd)
-BASEDIR := $(abspath $(CURDIR))
+BASEDIR := $(abspath $(CURDIR)/..)
 
 PROJECT ?= $(notdir $(BASEDIR))
 PROJECT := $(strip $(PROJECT))
 
 ERTS_INCLUDE_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s/erts-~s/include/\", [code:root_dir(), erlang:system_info(version)]).")
+ERL_INTERFACE_INCLUDE_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s\", [code:lib_dir(erl_interface, include)]).")
+ERL_INTERFACE_LIB_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s\", [code:lib_dir(erl_interface, lib)]).")
 
 C_SRC_DIR = $(CURDIR)
-C_SRC_OUTPUT ?= ../priv/ecsv.so
+C_SRC_OUTPUT ?= $(CURDIR)/../priv/$(PROJECT).so
 
 # System type and C compiler/flags.
 
 UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Darwin)
 	CC ?= cc
-	CFLAGS ?= -O3 -std=c99 -arch x86_64 -finline-functions -Wall -Wextra
+	CFLAGS ?= -O3 -std=c99 -arch x86_64 -finline-functions -Wall -Wextra #-fsanitize=address,memory
 	CXXFLAGS ?= -O3 -arch x86_64 -finline-functions -Wall
-	LDFLAGS ?= -arch x86_64 -undefined dynamic_lookup -dynamiclib
+	LDFLAGS ?= -arch x86_64 -flat_namespace -undefined suppress -L/usr/local/opt/llvm38/lib/llvm-3.8/lib
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CC ?= cc
 	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wextra
@@ -26,15 +28,14 @@ else ifeq ($(UNAME_SYS), FreeBSD)
 else ifeq ($(UNAME_SYS), Linux)
 	CC ?= gcc
 	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wextra
-	CXXFLAGS ?= -O3 -finline-functions -Wall -shared
-	LDFLAGS ?= -shared
+	CXXFLAGS ?= -O3 -finline-functions -Wall
 endif
 
-CFLAGS += -g -fvisibility=hidden -fPIC -I $(ERTS_INCLUDE_DIR)
-CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR)
+CFLAGS += -g -fvisibility=hidden -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
+CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 
-LDLIBS += -lcsv
-LDFLAGS += -fPIC
+LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -lei -lcsv
+LDFLAGS += -g -shared
 
 # Verbosity.
 
@@ -59,6 +60,7 @@ all: $(C_SRC_OUTPUT)
 -include $(OBJECTS:.o=.d)
 
 $(C_SRC_OUTPUT): $(OBJECTS)
+	@mkdir -p $(BASEDIR)/priv/
 	$(link_verbose) $(CC) $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(C_SRC_OUTPUT)
 
 %.o: %.c
