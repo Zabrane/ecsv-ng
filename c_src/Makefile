@@ -9,7 +9,7 @@ PROJECT := $(strip $(PROJECT))
 ERTS_INCLUDE_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s/erts-~s/include/\", [code:root_dir(), erlang:system_info(version)]).")
 
 C_SRC_DIR = $(CURDIR)
-C_SRC_OUTPUT ?= $(CURDIR)/priv/ecsv.so
+C_SRC_OUTPUT ?= ../priv/ecsv.so
 
 # System type and C compiler/flags.
 
@@ -59,7 +59,6 @@ all: $(C_SRC_OUTPUT)
 -include $(OBJECTS:.o=.d)
 
 $(C_SRC_OUTPUT): $(OBJECTS)
-	@mkdir -p $(BASEDIR)/priv/
 	$(link_verbose) $(CC) $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(C_SRC_OUTPUT)
 
 %.o: %.c
