@@ -31,11 +31,11 @@ else ifeq ($(UNAME_SYS), Linux)
 	CXXFLAGS ?= -O3 -finline-functions -Wall
 endif
 
-CFLAGS += -g -fvisibility=hidden -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
+CFLAGS += -fvisibility=hidden -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 
 LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -lei -lcsv
-LDFLAGS += -g -shared
+LDFLAGS += -shared
 
 # Verbosity.
 
