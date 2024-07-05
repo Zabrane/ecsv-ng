@@ -18,13 +18,13 @@ C_SRC_OUTPUT ?= $(CURDIR)/../priv/$(PROJECT).so
 UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Darwin)
 	CC ?= cc
-	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wextra -I/opt/homebrew/opt/libcsv/include #-fsanitize=address,memory
-	CXXFLAGS ?= -O3 -finline-functions -Wall -I/opt/homebrew/opt/libcsv/include
+	CFLAGS ?= -O3 -std=c99 -flto -finline-functions -Wall -Wextra -I/opt/homebrew/opt/libcsv/include #-fsanitize=address,memory
+	CXXFLAGS ?= -O3 -flto -finline-functions -Wall -I/opt/homebrew/opt/libcsv/include
 	LDFLAGS ?= -flat_namespace -undefined suppress -L/opt/homebrew/opt/libcsv/lib
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CC ?= cc
-	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wextra
-	CXXFLAGS ?= -O3 -finline-functions -Wall
+	CFLAGS ?= -O3 -flto -std=c99 -finline-functions -Wall -Wextra
+	CXXFLAGS ?= -O3 -flto -finline-functions -Wall
 else ifeq ($(UNAME_SYS), Linux)
 	CC ?= gcc
 	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wextra
